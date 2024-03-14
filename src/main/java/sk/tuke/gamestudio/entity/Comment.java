@@ -1,4 +1,4 @@
-package sk.tuke.gamestudio.entity;
+package main.java.sk.tuke.gamestudio.entity;
 
 
 public class Comment {

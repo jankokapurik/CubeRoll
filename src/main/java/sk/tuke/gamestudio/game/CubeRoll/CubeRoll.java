@@ -7,8 +7,8 @@ import main.java.sk.tuke.gamestudio.game.CubeRoll.core.GameField;
 public class CubeRoll {
 
     public static void main(String[] args) {
-        GameField field = new GameField(10, 1);
-        Cube cube = new Cube(0,0, field);
+        Cube cube = new Cube();
+        GameField field = new GameField(10, 1, cube);
 
         ConsoleUI consoleUI = new ConsoleUI(field, cube);
         consoleUI.play();

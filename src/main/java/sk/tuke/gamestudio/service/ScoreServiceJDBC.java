@@ -1,6 +1,6 @@
-package sk.tuke.gamestudio.service;
+package main.java.sk.tuke.gamestudio.service;
 
-import sk.tuke.gamestudio.entity.Score;
+import main.java.sk.tuke.gamestudio.entity.Score;
 
 import java.sql.*;
 import java.sql.Date;
