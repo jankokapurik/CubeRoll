@@ -1,4 +1,4 @@
-package main.java.sk.tuke.gamestudio.entity;
+package sk.tuke.gamestudio.entity;
 
 import java.util.Date;
 
@@ -59,5 +59,6 @@ public class Score {
                 ", playedOn=" + playedOn +
                 '}';
     }
+
 
 }

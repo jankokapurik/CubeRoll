@@ -1,32 +1,29 @@
-package main.java.sk.tuke.gamestudio.game.CubeRoll.core;
+package sk.tuke.gamestudio.game.CubeRoll.core;
 
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Cube {
-    Map<String, Color> cubeSides = new HashMap<>();
+    private Map<String, Color> cubeSides = new HashMap<>();
+    boolean wasTeleported;
+    public Cube()
+    {
+        this.cubeSides.put("top", Color.white);
+        this.cubeSides.put("bottom", Color.white);
+        this.cubeSides.put("right", Color.white);
+        this.cubeSides.put("left", Color.white);
+        this.cubeSides.put("up", Color.white);
+        this.cubeSides.put("down", Color.white);
+        this.wasTeleported = false;
+    }
 
     public Map<String, Color> getCubeSides() {
         return cubeSides;
     }
 
-    public Cube()
-    {
-        cubeSides.put("top", Color.white);
-        cubeSides.put("bottom", Color.white);
-        cubeSides.put("right", Color.white);
-        cubeSides.put("left", Color.white);
-        cubeSides.put("up", Color.white);
-        cubeSides.put("down", Color.white);
-    }
-
     public Color getTopSide() {
         return cubeSides.get("top");
-    }
-
-    public Color getBottomSide() {
-        return cubeSides.get("bottom");
     }
 
     public void paintSide (Color color)

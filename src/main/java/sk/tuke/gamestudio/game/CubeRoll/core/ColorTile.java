@@ -1,4 +1,4 @@
-package main.java.sk.tuke.gamestudio.game.CubeRoll.core;
+package sk.tuke.gamestudio.game.CubeRoll.core;
 
 import java.awt.Color;
 

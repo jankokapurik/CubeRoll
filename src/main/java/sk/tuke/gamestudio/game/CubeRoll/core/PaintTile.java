@@ -1,4 +1,4 @@
-package main.java.sk.tuke.gamestudio.game.CubeRoll.core;
+package sk.tuke.gamestudio.game.CubeRoll.core;
 
 import java.awt.*;
 
@@ -10,8 +10,12 @@ public class PaintTile extends Tile{
         this.color = color;
     }
 
-    public Color getColor()
-    {
+    public Color getColor() {
         return this.color;
+    }
+
+    public void paintCubeSide(Cube cube)
+    {
+        cube.paintSide(this.color);
     }
 }

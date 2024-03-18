@@ -1,6 +1,6 @@
-package main.java.sk.tuke.gamestudio.service;
+package sk.tuke.gamestudio.service;
 
-import main.java.sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.entity.Comment;
 
 import java.util.List;
 

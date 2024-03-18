@@ -1,10 +1,10 @@
-package main.java.sk.tuke.gamestudio.game.CubeRoll.core;
+package sk.tuke.gamestudio.game.CubeRoll.core;
 
 public class ButtonTile extends Tile{
 
     private int disappearingTileXPos;
     private int disappearingTileYPos;
-    public ButtonTile(int diappearingTileXPos, int disappearingTileYPos)
+    public ButtonTile(int disappearingTileYPos, int diappearingTileXPos)
     {
         this.disappearingTileXPos = diappearingTileXPos;
         this.disappearingTileYPos = disappearingTileYPos;

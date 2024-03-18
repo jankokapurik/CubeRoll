@@ -1,21 +1,25 @@
-package main.java.sk.tuke.gamestudio.game.CubeRoll.core;
+package sk.tuke.gamestudio.game.CubeRoll.core;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class GameField {
-    private final int MAP_SIZE = 10;
-    private Tile[][] tiles = new Tile[this.MAP_SIZE][this.MAP_SIZE];
+    private int mapRows;
+    private int mapCols;
+    private Tile[][] tiles;
     private final Cube cube;
     private int cubeXPos;
     private int cubeYPos;
+    private int min_moves;
+    private int moves;
     private GameState state = GameState.PLAYING;
 
-    public GameField(int rowCount, int level, Cube cube)
-    {
-        loadMap(level);
-        this.cubeXPos = 0;
-        this.cubeYPos = 5;
+    public GameField(int level, Cube cube) throws IOException {
+        loadLevel(level);
         this.cube = cube;
+        this.moves = 0;
     }
 
     public void setCubeXPos(int cubeXPos) {
@@ -26,65 +30,76 @@ public class GameField {
         this.cubeYPos = cubeYPos;
     }
 
-    public int getMapSize() {
-        return MAP_SIZE;
+    public int getMapRows() {
+        return this.mapRows;
     }
 
+    public int getMapCols(){ return this.mapCols;}
     public Tile[][] getTiles() {
-        return tiles;
+        return this.tiles;
     }
 
     public int getCubeXPos() {
-        return cubeXPos;
+        return this.cubeXPos;
     }
 
     public int getCubeYPos() {
-        return cubeYPos;
+        return this.cubeYPos;
     }
 
     public GameState getState() {
         return this.state;
     }
 
+    public Cube getCube() {
+        return cube;
+    }
+
+    public int getMoves() {
+        return this.moves;
+    }
+
     public void moveHorizontally(int move) {
         int newX = this.cubeXPos + move;
-        if (((move == 1 && this.cubeXPos < MAP_SIZE - 1 ) ||
+        if (((move == 1 && this.cubeXPos < mapCols - 1 ) ||
                 (move == -1 && this.cubeXPos > 0))
                 && this.tiles[cubeYPos][newX] != null)
         {
             if(move == 1) {
-                if(canMoveToTile("right", newX, cubeYPos)) return;
+                if(cantMoveToTile("right", newX, cubeYPos)) return;
                 this.cube.rollRight();
             } else {
-                if(canMoveToTile("left", newX, cubeYPos)) return;
+                if(cantMoveToTile("left", newX, cubeYPos)) return;
                 this.cube.rollLeft();
             }
+            this.cube.wasTeleported = false;
             this.cubeXPos = newX;
+            this.moves++;
         }
         checkForFunctions();
     }
-
 
     public void moveVertically(int move) {
         int newY = cubeYPos + move;
-        if (((move == 1 && this.cubeYPos < MAP_SIZE - 1) ||
+        if (((move == 1 && this.cubeYPos < mapRows - 1) ||
                 (move == -1 && this.cubeYPos > 0)) &&
                 this.tiles[newY][cubeXPos] != null) {
             if(move == 1) {
-                if(canMoveToTile("down", cubeXPos, newY)) return;
+                if(cantMoveToTile("down", cubeXPos, newY)) return;
                 this.cube.rollDown();
             } else {
-                if(canMoveToTile("up", cubeXPos, newY)) return;
+                if(cantMoveToTile("up", cubeXPos, newY)) return;
                 this.cube.rollUp();
             }
+            this.cube.wasTeleported = false;
             this.cubeYPos = newY;
-
+            this.moves++;
         }
         checkForFunctions();
     }
-    public boolean canMoveToTile(String sideToCompare, int xPos, int yPos) {
-        if (this.tiles[yPos][xPos] instanceof ColorTile) {
-            ColorTile colorTile = (ColorTile) this.tiles[yPos][xPos];
+
+    public boolean cantMoveToTile(String sideToCompare, int xPos, int yPos) {
+        if (this.tiles[yPos][xPos] instanceof ColorTile colorTile) {
             return !colorTile.getColor().equals(this.cube.getCubeSides().get(sideToCompare));
         }
         return false;
@@ -94,7 +109,7 @@ public class GameField {
         Tile tile = this.tiles[this.cubeYPos][this.cubeXPos];
         isFinish();
         if (tile instanceof PaintTile) {
-            this.cube.paintSide(((PaintTile) this.tiles[this.cubeYPos][cubeXPos]).color);
+            ((PaintTile) tile).paintCubeSide(this.cube);
         }
         if (tile instanceof TeleportTile) {
             ((TeleportTile) tile).teleportCube(this);
@@ -109,38 +124,49 @@ public class GameField {
         if(this.tiles[cubeYPos][cubeXPos] instanceof FinishTile)
         {
             this.state = GameState.SOLVED;
-            System.out.println("YOU WON!");
         }
     }
-    private void loadMap(int level)
-    {
-        for(int i = 0; i < MAP_SIZE; i++)
-        {
-            for(int j = 0; j < MAP_SIZE; j++)
-            {
-                if (i == 5 && j == 9)
-                {
-                    tiles[i][j] = new FinishTile();
-                } else if (i == 5 && j == 8) {
-                    tiles[i][j] = new ColorTile(Color.red);
-                } else if (i == 3 && j == 6) {
-                    tiles[i][j] = new PaintTile(Color.red);
-                } else if (i == 4 && j == 6) {
-                    tiles[i][j] = new Tile();
-                }else if (i == 6 && j == 6) {
-                        tiles[i][j] = new TeleportTile(1, 4);
-                }else if (i == 4 && j == 3) {
-                    tiles[i][j] = new ButtonTile(1, 4);
-                }else if (i == 3 && j == 1) {
-                    tiles[i][j] = new TeleportTile(6, 6);
-                } else if (i == 5)
-                {
-                    tiles[i][j] = new Tile();
-                }
-                else {
-                    tiles[i][j] = null;
+    private void loadLevel(int level) throws IOException {
+
+        String filename = "src/main/resources/level" + level + ".txt";
+
+        try (Scanner scanner = new Scanner(new File(filename))) {
+            this.mapRows = Integer.parseInt(scanner.next());
+            this.mapCols = Integer.parseInt(scanner.next());
+            this.cubeYPos = Integer.parseInt(scanner.next());
+            this.cubeXPos = Integer.parseInt(scanner.next());
+            this.min_moves = Integer.parseInt(scanner.next());
+
+            this.tiles = new Tile[this.mapRows][this.mapCols];
+
+            for (int row = 0; row < this.mapRows; row++) {
+                for (int col = 0; col < this.mapCols; col++) {
+                    tiles[row][col] = readTile(scanner);
                 }
             }
         }
+    }
+
+    private Tile readTile(Scanner scanner)
+    {
+        String buffer = scanner.next();
+
+        return switch (buffer) {
+            case "r" -> new Tile();
+            case "b" -> new ButtonTile(Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()));
+            case "t" -> new TeleportTile(Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()));
+            case "p" -> new PaintTile(parseColor(scanner.next()));
+            case "c" -> new ColorTile(parseColor(scanner.next()));
+            case "f" -> new FinishTile();
+            default -> null;
+        };
+    }
+    private Color parseColor(String colorString) {
+        return switch (colorString.toLowerCase()) {
+            case "red" -> Color.RED;
+            case "blue" -> Color.BLUE;
+            case "green" -> Color.GREEN;
+            default -> Color.BLACK;
+        };
     }
 }
