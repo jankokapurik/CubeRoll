@@ -22,6 +22,10 @@ public class GameField {
         this.moves = 0;
     }
 
+    public int getMin_moves() {
+        return min_moves;
+    }
+
     public void setCubeXPos(int cubeXPos) {
         this.cubeXPos = cubeXPos;
     }
@@ -72,7 +76,7 @@ public class GameField {
                 if(cantMoveToTile("left", newX, cubeYPos)) return;
                 this.cube.rollLeft();
             }
-            this.cube.wasTeleported = false;
+            this.cube.wasExecuted = false;
             this.cubeXPos = newX;
             this.moves++;
         }
@@ -91,7 +95,7 @@ public class GameField {
                 if(cantMoveToTile("up", cubeXPos, newY)) return;
                 this.cube.rollUp();
             }
-            this.cube.wasTeleported = false;
+            this.cube.wasExecuted = false;
             this.cubeYPos = newY;
             this.moves++;
         }
@@ -115,7 +119,8 @@ public class GameField {
             ((TeleportTile) tile).teleportCube(this);
         }
         if (tile instanceof ButtonTile) {
-            this.tiles = ((ButtonTile) tile).toggleTile(this.tiles);
+            this.tiles = ((ButtonTile) tile).toggleTile(this.tiles, this.cube);
+            this.cube.wasExecuted = true;
         }
 
     }
@@ -166,6 +171,7 @@ public class GameField {
             case "red" -> Color.RED;
             case "blue" -> Color.BLUE;
             case "green" -> Color.GREEN;
+            case "white" -> Color.WHITE;
             default -> Color.BLACK;
         };
     }

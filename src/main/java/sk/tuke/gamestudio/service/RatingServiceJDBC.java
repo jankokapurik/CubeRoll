@@ -46,8 +46,8 @@ public class RatingServiceJDBC implements RatingService{
             statement.setString(1, game);
             int avg_rating = -1;
             try (ResultSet rs = statement.executeQuery()) {
-                if (rs.next()) { // Move the cursor to the first row
-                    avg_rating = rs.getInt("average_rating"); // Use column name
+                if (rs.next()) {
+                    avg_rating = rs.getInt("average_rating");
                 }
                 return avg_rating;
             }
@@ -67,7 +67,7 @@ public class RatingServiceJDBC implements RatingService{
             try (ResultSet rs = statement.executeQuery()) {
                 int rating = -1;
                 if (rs.next()) {
-                    rating = rs.getInt(1); // Access the first column
+                    rating = rs.getInt(1);
                 }
                 return rating;
             }

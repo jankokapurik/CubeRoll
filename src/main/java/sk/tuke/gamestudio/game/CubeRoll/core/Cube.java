@@ -6,7 +6,8 @@ import java.util.Map;
 
 public class Cube {
     private Map<String, Color> cubeSides = new HashMap<>();
-    boolean wasTeleported;
+    boolean wasExecuted;
+
     public Cube()
     {
         this.cubeSides.put("top", Color.white);
@@ -15,7 +16,7 @@ public class Cube {
         this.cubeSides.put("left", Color.white);
         this.cubeSides.put("up", Color.white);
         this.cubeSides.put("down", Color.white);
-        this.wasTeleported = false;
+        this.wasExecuted = false;
     }
 
     public Map<String, Color> getCubeSides() {

@@ -2,6 +2,7 @@ package sk.tuke.gamestudio.game.CubeRoll.ConsoleUI;
 
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
+import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.game.CubeRoll.core.*;
 import sk.tuke.gamestudio.service.*;
 
@@ -16,6 +17,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
+import static java.lang.System.exit;
+
 public class ConsoleUI {
 
     public static final String ANSI_RESET = "\u001B[0m";
@@ -26,7 +29,7 @@ public class ConsoleUI {
     private final RatingService ratingService = new RatingServiceJDBC();
     private final CommentService commentService = new CommentServiceJDBC();
     private final Scanner scanner;
-
+    private int level;
     private boolean isLevelFinished;
 
     public ConsoleUI() {
@@ -63,6 +66,9 @@ public class ConsoleUI {
                     getComments();
                     break;
                 case "7":
+                    help();
+                    break;
+                case "8":
                     System.out.println("Goodbye!");
                     return;
                 default:
@@ -75,7 +81,7 @@ public class ConsoleUI {
 
         this.isLevelFinished = false;
         this.cube = new Cube();
-        int level = chooseLevel();
+        chooseLevel();
         this.field = new GameField(level, cube);
         JFrame myJFrame = new JFrame();
         getKeyListener(myJFrame);
@@ -88,18 +94,19 @@ public class ConsoleUI {
                 e.printStackTrace();
             }
         }
-
+        saveScore();
     }
 
     private void showMenu() {
-        System.out.println("=== MENU ===");
+        System.out.println("\n=== MENU ===");
         System.out.println("1. Play");
         System.out.println("2. Rate game");
         System.out.println("3. Get your rating");
         System.out.println("4. Hall of fame");
         System.out.println("5. Leave Comment");
         System.out.println("6. View Comments");
-        System.out.println("7. Quit");
+        System.out.println("7. Help");
+        System.out.println("8. Quit");
         System.out.print("Enter your choice: ");
     }
 
@@ -210,18 +217,21 @@ public class ConsoleUI {
 
     public void welcomeText()
     {
-        System.out.println("                        |‾‾|                               ");
-        System.out.println("            ____ __   __|  |___   _____      __ _   _____ |‾‾|‾‾|");
-        System.out.println("           /  __|  | |  |   _  \\ /_____\\    |  ‾_‾|/  _  \\|  |  |");
-        System.out.println("           |  |_|  | |  |  |_)  | \\_____    |  | ‾|  (_)  |  |  |");
-        System.out.println("           \\____|\\______|______/ \\_____/    |__|   \\_____/|__|__|");
-        System.out.println("Welcome to the game Cube roll!" + ratingService.getAverageRating("cuberoll") + "/5");
+        System.out.println("/‾‾‾‾‾|       |‾‾|");
+        System.out.println("|  |‾‾ __   __|  |___   _____      __ _   _____ |‾‾|‾‾|");
+        System.out.println("|  |  |  | |  |   _  \\ /  __ \\    |  ‾_‾|/  _  \\|  |  |");
+        System.out.println("|  |__|  | |  |  |_)  |   ___/    |  | ‾|  (_)  |  |  |");
+        System.out.println("\\_____|\\______|______/ \\_____|    |__|   \\_____/|__|__|");
+        System.out.println("Welcome to the game Cube roll! " + ratingService.getAverageRating("cuberoll") + "/5");
     }
 
-    public int chooseLevel()
+    public void chooseLevel()
     {
-        System.out.println("\nWhich level would you like to play?" );
-        return scanner.nextInt();
+        System.out.println("\nWhich level would you like to play? (1-10)" );
+        do
+        {
+            this.level = scanner.nextInt();
+        } while (this.level < 1 || this.level > 10);
     }
 
     private void printScores() {
@@ -295,4 +305,30 @@ public class ConsoleUI {
             input = this.scanner.next();
         } while(!input.equalsIgnoreCase("q"));
     }
+
+    private void saveScore() {
+        int scoreValue;
+        scoreValue = scoreService.getScore("cuberoll", this.player_name);
+        int newScoreValue = 100 * this.field.getMin_moves() / this.field.getMoves();
+        if (scoreValue == 0) {
+            scoreService.addScore(new Score("cuberoll", this.player_name, newScoreValue, Date.valueOf(LocalDate.now())));
+        }
+        else
+        {
+            scoreService.updatePlayer(player_name, "cuberoll", scoreValue + newScoreValue);
+        }
+    }
+
+    private void help() {
+        System.out.println("================================================");
+        System.out.println("You can control the game with arrow keys, the cube will move if possible.\n");
+        System.out.println("■ => Cube position on the map, it can have any given color.");
+        System.out.println("█ => Regular tile, if it is white. If it is any other color, you have to step \n\ton it only with the side of the cube that matches the color.");
+        System.out.println("▢ => Button tile, one tile appears or disappears if you step on it.");
+        System.out.println("▣ => Teleport tile, it will move you to the other teleport if you step on it.");
+        System.out.println("+ => Paint, it will paint the bottom side of the cube with given color.");
+        System.out.println("================================================\n");
+        qToExit();
+    }
+
 }

@@ -16,6 +16,7 @@ public class PaintTile extends Tile{
 
     public void paintCubeSide(Cube cube)
     {
+
         cube.paintSide(this.color);
     }
 }

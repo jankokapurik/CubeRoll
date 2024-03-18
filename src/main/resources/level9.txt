@@ -1,0 +1,10 @@
+7 12
+3 11
+49
+. . . . . . p green . . . . .
+. . . . . . c red . . . . .
+. . . . . . r r . . . .
+f c blue c green c red r r c blue r r r p blue r
+. . . r . r r . . r . .
+. . . p red r . . . r c blue . .
+. . . . r r r r r . . .

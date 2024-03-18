@@ -1,0 +1,8 @@
+5 6
+3 0
+19
+f r r c green r p blue
+. . . . t 4 1 r
+. . . . . .
+r r c blue r p green .
+. t 1 4 . . . .

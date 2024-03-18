@@ -1,0 +1,10 @@
+7 11
+4 0
+61
+. . . . . b 2 4 c red b 4 4 . . .
+. . . . . . r . . . .
+. . . . . r r r r r p blue
+. . . r r r . . r . .
+r r r r . . r r p white . .
+. . r . r . r . . . f
+. . p red r c red r r r c red r c blue

@@ -14,7 +14,7 @@ public class TeleportTile extends Tile{
         Tile destinationTile = field.getTiles()[DESTINATIONY][DESTINATIONX];
 
         if (destinationTile instanceof TeleportTile &&
-                !field.getCube().wasTeleported && (
+                !field.getCube().wasExecuted && (
                 (DESTINATIONX > 0 && field.getTiles()[DESTINATIONY][DESTINATIONX - 1] != null) ||
                 (DESTINATIONX < field.getMapCols() - 1 && field.getTiles()[DESTINATIONY][DESTINATIONX + 1] != null) ||
                 (DESTINATIONY > 0 && field.getTiles()[DESTINATIONY - 1][DESTINATIONX] != null) ||
@@ -23,7 +23,7 @@ public class TeleportTile extends Tile{
         {
             field.setCubeXPos(this.DESTINATIONX);
             field.setCubeYPos(this.DESTINATIONY);
-            field.getCube().wasTeleported = true;
+            field.getCube().wasExecuted = true;
         }
     }
 }

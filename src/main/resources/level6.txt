@@ -1,0 +1,8 @@
+5 10
+2 0
+21
+. . . r p white c red c blue c red r f
+. . . r r . . . . .
+r r . c red c blue c red r r . .
+. r . . . . . r . .
+. r r p red p blue p red r r . .

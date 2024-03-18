@@ -10,7 +10,8 @@ public class ButtonTile extends Tile{
         this.disappearingTileYPos = disappearingTileYPos;
     }
 
-    public Tile[][] toggleTile(Tile[][] tiles) {
+    public Tile[][] toggleTile(Tile[][] tiles, Cube cube) {
+        if(cube.wasExecuted) return tiles;
         if(tiles[disappearingTileYPos][disappearingTileXPos] == null)
         {
             tiles[disappearingTileYPos][disappearingTileXPos] = new Tile();
@@ -19,6 +20,7 @@ public class ButtonTile extends Tile{
         {
             tiles[disappearingTileYPos][disappearingTileXPos] = null;
         }
+        cube.wasExecuted = true;
         return tiles;
     }
 }

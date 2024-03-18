@@ -1,0 +1,10 @@
+7 11
+3 0
+40
+. . . r c red r r . . . .
+. . . r . . r . . . .
+. . . r . . r . . . .
+r r r r p blue r r c blue c blue r f
+. . . r . . r . . . .
+. . . r . . r . . . .
+. . . r p red r r . . . .
