@@ -1,14 +1,34 @@
 package sk.tuke.gamestudio.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQuery;
 import sk.tuke.gamestudio.service.RatingException;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Rating {
+@Entity
+@NamedQuery( name = "Rating.getRating",
+        query = "SELECT r FROM Rating r WHERE r.game=:game AND r.player =: player")
+@NamedQuery( name = "Rating.resetRatings",
+        query = "DELETE FROM Rating")
+@NamedQuery( name = "Rating.getAverageRating",
+        query = "SELECT AVG(rating ) AS rating FROM Rating r WHERE game =: game")
+
+public class Rating implements Serializable {
+
+    @Id
+    @GeneratedValue
+    private int ident;
     private String game;
     private String player;
     private int rating;
     private Date ratedOn;
+
+    public Rating() {
+    }
 
     public Rating(String game, String player, int rating, Date ratedOn) {
         this.game = game;
@@ -35,6 +55,14 @@ public class Rating {
 
     public int getRating() {
         return rating;
+    }
+
+    public int getIdent() {
+        return ident;
+    }
+
+    public void setIdent(int ident) {
+        this.ident = ident;
     }
 
     public void setRating(int rating) {

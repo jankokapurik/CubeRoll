@@ -1,5 +1,6 @@
 package sk.tuke.gamestudio.game.CubeRoll.ConsoleUI;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
@@ -25,9 +26,14 @@ public class ConsoleUI {
     private GameField field;
     private Cube cube;
     private final String player_name;
-    private final ScoreService scoreService = new ScoreServiceJDBC();
-    private final RatingService ratingService = new RatingServiceJDBC();
-    private final CommentService commentService = new CommentServiceJDBC();
+
+    @Autowired
+    private ScoreService scoreService;
+    @Autowired
+    private RatingService ratingService;
+    @Autowired
+    private CommentService commentService;
+
     private final Scanner scanner;
     private int level;
     private boolean isLevelFinished;
@@ -35,7 +41,7 @@ public class ConsoleUI {
     public ConsoleUI() {
 
         this.scanner = new Scanner(System.in);
-        welcomeText();
+//        welcomeText();
         this.player_name = getPlayerName();
     }
 
@@ -315,7 +321,7 @@ public class ConsoleUI {
         }
         else
         {
-            scoreService.updatePlayer(player_name, "cuberoll", scoreValue + newScoreValue);
+            scoreService.updatePlayer(new Score("cuberoll", this.player_name, newScoreValue + scoreValue, Date.valueOf(LocalDate.now())));
         }
     }
 

@@ -94,4 +94,9 @@ public class ScoreServiceJDBC implements ScoreService {
             throw new RatingException("Problem selecting score", e);
         }
     }
+
+    @Override
+    public void updatePlayer(Score score) {
+
+    }
 }

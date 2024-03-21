@@ -9,5 +9,5 @@ public interface ScoreService {
     List<Score> getTopScores(String game) throws ScoreException;
     void reset() throws ScoreException;
     int getScore(String game, String player);
-    public void updatePlayer(String player, String game, int points);
+    public void updatePlayer(Score score);
 }
