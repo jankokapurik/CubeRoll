@@ -3,7 +3,6 @@ package sk.tuke.gamestudio.service;
 import sk.tuke.gamestudio.entity.Score;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,21 +61,7 @@ public class ScoreServiceJDBC implements ScoreService {
         }
     }
 
-    public void updatePlayer(String player, String game, int points)
-    {
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(UPDATE)
-        ) {
-            statement.setInt(1, points);
-            statement.setTimestamp(2, new Timestamp(Date.valueOf(LocalDate.now()).getTime() ));
-            statement.setString(3, game);
-            statement.setString(4,player);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new ScoreException("Problem updating score", e);
-        }
-    }
-    public int getScore(String game, String player) throws RatingException {
+    public Score getScore(String game, String player) throws RatingException {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement statement = connection.prepareStatement(GET);
         ) {
@@ -88,15 +73,10 @@ public class ScoreServiceJDBC implements ScoreService {
                     score = rs.getInt(1);
                 }
                 System.out.println(score);
-                return score;
+                return null;
             }
         } catch (SQLException e) {
             throw new RatingException("Problem selecting score", e);
         }
-    }
-
-    @Override
-    public void updatePlayer(Score score) {
-
     }
 }

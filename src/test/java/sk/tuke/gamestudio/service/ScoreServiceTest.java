@@ -61,7 +61,6 @@ public class ScoreServiceTest {
     public void testUpdatePlayer() {
         Score score = new Score("cuberoll", "janko", 100, new Date());
         scoreService.addScore(score);
-        scoreService.updatePlayer("janko", "cuberoll", 200);
         assertEquals(200, scoreService.getScore("cuberoll", "janko"));
     }
 

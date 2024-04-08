@@ -6,8 +6,8 @@ import java.io.IOException;
 public class CubeRoll {
     public static void main(String[] args) throws IOException {
 
-        ConsoleUI consoleUI = new ConsoleUI();
+//        ConsoleUI consoleUI = new ConsoleUI();
 
-        consoleUI.play();
+//        consoleUI.play();
     }
 }

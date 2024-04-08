@@ -1,6 +1,8 @@
 package sk.tuke.gamestudio.game.CubeRoll.ConsoleUI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.RestTemplate;
+import sk.tuke.gamestudio.SpringClient;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static java.lang.System.exit;
@@ -33,12 +36,14 @@ public class ConsoleUI {
     private RatingService ratingService;
     @Autowired
     private CommentService commentService;
-
+    @Autowired
+    private RestTemplate restTemplate;
     private final Scanner scanner;
     private int level;
     private boolean isLevelFinished;
-
-    public ConsoleUI() {
+    private SpringClient springClient;
+    public ConsoleUI(SpringClient springClient) {
+        this.springClient = springClient;
 
         this.scanner = new Scanner(System.in);
 //        welcomeText();
@@ -57,19 +62,24 @@ public class ConsoleUI {
                     startGame();
                     break;
                 case "2":
-                    rateGame();
+                    if(isServerConnected())
+                        rateGame();
                     break;
                 case "3":
-                    getRating();
+                    if(isServerConnected())
+                        getRating();
                     break;
                 case "4":
-                    printScores();
+                    if (isServerConnected())
+                        printScores();
                     break;
                 case "5":
-                    leaveComment();
+                    if(isServerConnected())
+                        leaveComment();
                     break;
                 case "6":
-                    getComments();
+                    if(isServerConnected())
+                        getComments();
                     break;
                 case "7":
                     help();
@@ -88,6 +98,8 @@ public class ConsoleUI {
         this.isLevelFinished = false;
         this.cube = new Cube();
         chooseLevel();
+
+
         this.field = new GameField(level, cube);
         JFrame myJFrame = new JFrame();
         getKeyListener(myJFrame);
@@ -216,9 +228,9 @@ public class ConsoleUI {
         return String.format("\u001B[38;2;%d;%d;%dm", r, g, b);
     }
 
-    public String printColorfulString(String character, Color side)
+    public String printColorfulString(String text, Color side)
     {
-       return colorToAnsi(side) + character + ANSI_RESET;
+       return colorToAnsi(side) + text + ANSI_RESET;
     }
 
     public void welcomeText()
@@ -313,15 +325,14 @@ public class ConsoleUI {
     }
 
     private void saveScore() {
-        int scoreValue;
-        scoreValue = scoreService.getScore("cuberoll", this.player_name);
-        int newScoreValue = 100 * this.field.getMin_moves() / this.field.getMoves();
-        if (scoreValue == 0) {
+        if (isServerConnected())
+        {
+            int newScoreValue = 100 * this.field.getMin_moves() / this.field.getMoves();
             scoreService.addScore(new Score("cuberoll", this.player_name, newScoreValue, Date.valueOf(LocalDate.now())));
         }
         else
         {
-            scoreService.updatePlayer(new Score("cuberoll", this.player_name, newScoreValue + scoreValue, Date.valueOf(LocalDate.now())));
+            System.out.println("Failed to save Score");
         }
     }
 
@@ -337,4 +348,14 @@ public class ConsoleUI {
         qToExit();
     }
 
+    private boolean isServerConnected()
+    {
+        boolean isConnected = this.springClient.isServerConnected();
+
+        if(!isConnected)
+        {
+            System.out.println(printColorfulString("Server is not connected", Color.red));
+        }
+        return isConnected;
+    }
 }

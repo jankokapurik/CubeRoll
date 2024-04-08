@@ -14,7 +14,7 @@ import java.util.Date;
 @NamedQuery( name = "Score.resetScores",
         query = "DELETE FROM Score")
 @NamedQuery( name = "Score.getScore",
-        query = "SELECT s.points FROM Score s WHERE s.game =: game AND s.player =: player")
+        query = "SELECT s From Score s WHERE s.game =: game AND s.player =: player")
 
 public class Score implements Serializable {
 

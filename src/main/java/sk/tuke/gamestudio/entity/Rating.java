@@ -15,7 +15,7 @@ import java.util.Date;
 @NamedQuery( name = "Rating.resetRatings",
         query = "DELETE FROM Rating")
 @NamedQuery( name = "Rating.getAverageRating",
-        query = "SELECT AVG(rating ) AS rating FROM Rating r WHERE game =: game")
+        query = "SELECT AVG(rating ) AS rating FROM Rating r WHERE r.game =: game")
 
 public class Rating implements Serializable {
 

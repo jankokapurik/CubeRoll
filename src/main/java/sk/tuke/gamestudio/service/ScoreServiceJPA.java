@@ -1,5 +1,6 @@
 package sk.tuke.gamestudio.service;
 
+import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import sk.tuke.gamestudio.entity.Score;
 
@@ -16,7 +17,14 @@ public class ScoreServiceJPA implements ScoreService {
 
     @Override
     public void addScore(Score score) throws ScoreException {
-        entityManager.persist(score);
+        Score existingScore = getScore(score.getGame(), score.getPlayer());
+        System.out.println(existingScore);
+        if (existingScore != null) {
+            existingScore.setPoints(existingScore.getPoints() + score.getPoints());
+            entityManager.merge(existingScore);
+        } else {
+            entityManager.persist(score);
+        }
     }
 
     @Override
@@ -32,12 +40,14 @@ public class ScoreServiceJPA implements ScoreService {
     }
 
     @Override
-    public int getScore(String game, String player) {
-        return entityManager.createNamedQuery("Score.getScore").setParameter("game", game).setParameter("player", player).getFirstResult();
-    }
-
-    @Override
-    public void updatePlayer(Score score) throws ScoreException{
-        entityManager.persist(score);
+    public Score getScore(String game, String player) {
+        try {
+            return (Score) entityManager.createNamedQuery("Score.getScore")
+                    .setParameter("game", game)
+                    .setParameter("player", player)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }

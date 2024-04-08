@@ -1,8 +1,10 @@
 package sk.tuke.gamestudio.service;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.hibernate.NonUniqueResultException;
 import sk.tuke.gamestudio.entity.Rating;
 @Transactional
 public class RatingServiceJPA implements RatingService{
@@ -11,7 +13,13 @@ public class RatingServiceJPA implements RatingService{
 
     @Override
     public void setRating(Rating rating) throws RatingException {
-        entityManager.persist(rating);
+        try {
+            Rating existingRating = (Rating) this.entityManager.createNamedQuery("Rating.getRating").setParameter("game", rating.getGame()).setParameter("player", rating.getPlayer()).getSingleResult();
+            existingRating.setRating(rating.getRating());
+            this.entityManager.merge(existingRating);
+        } catch (NoResultException e) {
+            this.entityManager.persist(rating);
+        }
     }
 
     @Override
@@ -22,7 +30,15 @@ public class RatingServiceJPA implements RatingService{
 
     @Override
     public int getRating(String game, String player) throws RatingException {
-        return entityManager.createNamedQuery("Rating.getRating").setParameter("game", game).setParameter("player", player).getFirstResult();
+        try {
+            Rating rating = (Rating) entityManager.createNamedQuery("Rating.getRating")
+                    .setParameter("game", game)
+                    .setParameter("player", player)
+                    .getSingleResult();
+            return rating.getRating();
+        } catch (NoResultException e) {
+            return -1;
+        }
     }
 
     @Override
