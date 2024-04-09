@@ -14,6 +14,7 @@ public class RatingServiceJPA implements RatingService{
     @Override
     public void setRating(Rating rating) throws RatingException {
         try {
+            if(rating.getRating() < 1 || rating.getRating() > 5) throw new RatingException("Rating out of range");
             Rating existingRating = (Rating) this.entityManager.createNamedQuery("Rating.getRating").setParameter("game", rating.getGame()).setParameter("player", rating.getPlayer()).getSingleResult();
             existingRating.setRating(rating.getRating());
             this.entityManager.merge(existingRating);

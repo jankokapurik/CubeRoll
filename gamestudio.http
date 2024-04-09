@@ -8,3 +8,23 @@ Content-Type: application/json
    "points": 100,
    "playedOn": "2019-03-25T12:40:33"
 }
+
+POST http://localhost:8080/api/comment
+
+Content-Type: application/json
+{
+   "game": "cuberoll",
+   "player": "betar",
+   "comment": "Velmi dobra hra.",
+   "commentedOn": "2019-03-25T12:40:33"
+}
+
+POST http://localhost:8080/api/rating
+
+Content-Type: application/json
+{
+   "game": "cuberoll",
+   "player": "betar",
+   "rating": 100,
+   "ratedOn": "2019-03-25T12:40:33"
+}
