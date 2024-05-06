@@ -18,6 +18,7 @@ export const useAuth = () => {
       );
 
       if (response.status === 200) {
+        console.log(response);
         localStorage.setItem("user", JSON.stringify(response.data));
         navigate("/");
       }
