@@ -3,23 +3,40 @@ import { useRating } from "../hooks/useRating";
 
 const Rating = () => {
   const user = localStorage.getItem("user");
+
   const [rating, setRating] = useState(null);
   const [hoverRating, setHoverRating] = useState(null);
+  const [userRating, setUserRating] = useState(3);
 
   const { addRating } = useRating();
 
-  useEffect(() => {
-    const fetchRating = async () => {
-      try {
-        const response = await axios.get("/api/rating/cuberoll");
-        setRating(response.data);
-      } catch (error) {
-        console.error("Error fetching scores:", error);
-      }
-    };
+//   useEffect(() => {
+//     const fetchRating = async () => {
+//       try {
+//         const response = await axios.get("/api/rating/cuberoll");
+//         setRating(response.data);
+//       } catch (error) {
+//         console.error("Error fetching scores:", error);
+//       }
+//     };
 
-    fetchRating();
-  }, []);
+//     fetchRating();
+//   }, []);
+
+//   useEffect(() => {
+//     const fetchUserRating = async () => {
+//       try {
+//         const response = await axios.get(
+//           "/api/rating/cuberoll/${user.username}"
+//         );
+//         setUserRating(response.data);
+//       } catch (error) {
+//         console.error("Error fetching scores:", error);
+//       }
+//     };
+
+//     fetchUserRating();
+//   }, []);
 
   const renderStars = (rating) => {
     const stars = [];
@@ -41,7 +58,7 @@ const Rating = () => {
           onMouseEnter={() => setHoverRating(i)}
           onMouseLeave={() => setHoverRating(null)}
         >
-          {i <= hoverRating ? "★" : "☆"}
+          {i <= (hoverRating || userRating) ? "★" : "☆"}
         </span>
       );
     }
