@@ -7,6 +7,7 @@ import sk.tuke.gamestudio.service.CommentService;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/comment")
 public class CommentServiceRest {
@@ -20,7 +21,7 @@ public class CommentServiceRest {
     }
 
     @PostMapping
-    public void addScore(@RequestBody Comment comment) {
+    public void addComment(@RequestBody Comment comment) {
         commentService.addComment(comment);
     }
 }

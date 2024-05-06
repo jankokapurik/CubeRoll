@@ -14,6 +14,7 @@ public class ScoreServiceRest {
     @Autowired
     private ScoreService scoreService;
 
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/{game}")
     public List<Score> getTopScores(@PathVariable String game) {
         return scoreService.getTopScores(game);

@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import sk.tuke.gamestudio.game.CubeRoll.core.Cube;
+import sk.tuke.gamestudio.game.CubeRoll.core.GameField;
 import sk.tuke.gamestudio.service.*;
 
 @SpringBootApplication

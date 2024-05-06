@@ -1,5 +1,10 @@
-POST http://localhost:8080/api/score
+GET http://localhost:8080/api/score/cuberoll
+###
 
+GET http://localhost:8080/api/score/cuberoll/Janko
+###
+
+POST http://localhost:8080/api/score
 Content-Type: application/json
 
 {
@@ -8,23 +13,34 @@ Content-Type: application/json
    "points": 100,
    "playedOn": "2019-03-25T12:40:33"
 }
+###
+
+GET http://localhost:8080/api/comment/cuberoll
+###
 
 POST http://localhost:8080/api/comment
-
 Content-Type: application/json
+
 {
    "game": "cuberoll",
-   "player": "betar",
-   "comment": "Velmi dobra hra.",
+   "player": "hresko",
+   "comment": "Velmi pekna hra",
    "commentedOn": "2019-03-25T12:40:33"
 }
+###
+
+GET http://localhost:8080/api/rating/cuberoll
+###
+
+GET http://localhost:8080/api/rating/cuberoll/Janko
+###
 
 POST http://localhost:8080/api/rating
-
 Content-Type: application/json
+
 {
    "game": "cuberoll",
    "player": "betar",
-   "rating": 100,
+   "rating": 3,
    "ratedOn": "2019-03-25T12:40:33"
 }
