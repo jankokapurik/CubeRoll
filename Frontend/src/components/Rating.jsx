@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useRating } from "../hooks/useRating";
+import axios from "axios";
 
 const Rating = () => {
-  const user = localStorage.getItem("user");
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const [rating, setRating] = useState(null);
   const [hoverRating, setHoverRating] = useState(null);
@@ -10,33 +11,33 @@ const Rating = () => {
 
   const { addRating } = useRating();
 
-//   useEffect(() => {
-//     const fetchRating = async () => {
-//       try {
-//         const response = await axios.get("/api/rating/cuberoll");
-//         setRating(response.data);
-//       } catch (error) {
-//         console.error("Error fetching scores:", error);
-//       }
-//     };
+  useEffect(() => {
+    const fetchRating = async () => {
+      try {
+        const response = await axios.get("/api/rating/cuberoll");
+        setRating(response.data);
+      } catch (error) {
+        console.error("Error fetching scores:", error);
+      }
+    };
 
-//     fetchRating();
-//   }, []);
+    fetchRating();
+  }, []);
 
-//   useEffect(() => {
-//     const fetchUserRating = async () => {
-//       try {
-//         const response = await axios.get(
-//           "/api/rating/cuberoll/${user.username}"
-//         );
-//         setUserRating(response.data);
-//       } catch (error) {
-//         console.error("Error fetching scores:", error);
-//       }
-//     };
+  useEffect(() => {
+    const fetchUserRating = async () => {
+      try {
+        const response = await axios.get(
+          "/api/rating/cuberoll/${user.username}"
+        );
+        setUserRating(response.data);
+      } catch (error) {
+        console.error("Error fetching scores:", error);
+      }
+    };
 
-//     fetchUserRating();
-//   }, []);
+    fetchUserRating();
+  }, []);
 
   const renderStars = (rating) => {
     const stars = [];
@@ -46,7 +47,7 @@ const Rating = () => {
     return stars;
   };
 
-  const addStars = () => {
+  const addStars = (user) => {
     const stars = [];
 
     for (let i = 1; i <= 5; i++) {
@@ -71,7 +72,7 @@ const Rating = () => {
       <h1>Average rating: </h1>
       <div>{renderStars(rating)}</div>
       <h1>Add rating: </h1>
-      <div>{addStars()}</div>
+      <div>{addStars(user)}</div>
     </div>
   );
 };

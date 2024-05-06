@@ -5,14 +5,13 @@ export const useRating = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const addRating = async (user, comment) => {
+  const addRating = async (user, rating) => {
     setIsLoading(true);
-    console.log(user, comment);
 
     try {
       const response = await axios.post("/api/rating/cuberoll", {
-         user: user.username,
-         comment,
+        user: user.username,
+        rating,
       });
 
       if (response.status === 200) {
