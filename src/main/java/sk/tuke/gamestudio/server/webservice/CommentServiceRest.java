@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.service.CommentService;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @CrossOrigin
@@ -21,7 +23,8 @@ public class CommentServiceRest {
     }
 
     @PostMapping
-    public void addComment(@RequestBody Comment comment) {
-        commentService.addComment(comment);
+    public void addComment(@RequestBody CommentRequestDto requestDto) {
+        commentService.addComment(new Comment("cuberoll", requestDto.getUser(), requestDto.getComment(),  Date.valueOf(LocalDate.now())));
     }
 }
+

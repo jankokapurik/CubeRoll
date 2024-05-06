@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import HallOfFame from "./HallOfFame";
 import Comments from "./Comments";
+import Rating from "./Rating";
 
 export default function Index() {
   const user = localStorage.getItem("user");
@@ -23,6 +24,7 @@ export default function Index() {
       >
         play
       </button>
+      <Rating/>
       <HallOfFame />
       <Comments />
     </main>

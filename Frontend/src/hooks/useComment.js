@@ -10,9 +10,9 @@ export const useComment = () => {
     console.log(user, comment);
 
     try {
-      const response = await axios.post("/api/comment/cuberoll", {
-        user: user.username,
-        comment,
+      const response = await axios.post("/api/comment", {
+         user: user.username,
+         comment,
       });
 
       if (response.status === 200) {

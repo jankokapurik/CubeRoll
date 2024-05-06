@@ -1,11 +1,11 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 
-
 export default function Rating() {
-	const [rating, setRating] = useState([]);
+	const [rating, setRating] = useState(null);
 
-    useEffect(() => {
-		const fetchRating= async () => {
+	useEffect(() => {
+		const fetchRating = async () => {
 			try {
 				const response = await axios.get("/api/rating/cuberoll");
 				setRating(response.data);
@@ -16,11 +16,25 @@ export default function Rating() {
 
 		fetchRating();
 	}, []);
-    
-    return(
-        
-        <div className="flex flex-col">
-            <h1>Average rating: {rating}</h1>
-        </div>
-    );
+
+	const renderStars = () => {
+		const stars = [];
+
+		for (let i = 0; i < 5; i++) {
+			if (i < rating) {
+				stars.push(<span key={i}>&#9733;</span>);
+			} else {
+				stars.push(<span key={i}>&#9734;</span>);
+			}
+		}
+
+		return stars;
+	};
+
+	return (
+		<div className="flex flex-col align-middle">
+			<h1>Average rating: {rating}</h1>
+			<div>{rating !== null && renderStars()}</div>
+		</div>
+	);
 }

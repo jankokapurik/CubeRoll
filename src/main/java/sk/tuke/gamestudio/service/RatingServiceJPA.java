@@ -30,7 +30,7 @@ public class RatingServiceJPA implements RatingService{
             Query query = entityManager.createNamedQuery("Rating.getAverageRating")
                     .setParameter("game", game);
             Double averageRating = (Double) query.getSingleResult();
-            return averageRating != null ? averageRating : 0.0; // Return 0.0 if no rating found
+            return (int) (averageRating != null ? averageRating : 0.0); // Return 0.0 if no rating found
         } catch (NoResultException e) {
             throw new RatingException("No rating found for the game: " + game, e);
         } catch (Exception e) {
