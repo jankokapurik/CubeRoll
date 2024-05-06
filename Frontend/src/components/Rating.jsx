@@ -1,61 +1,62 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useRating } from "../hooks/useRating";
 
 const Rating = () => {
-	const [rating, setRating] = useState(null);
-	const [hoverRating, setHoverRating] = useState(null);
+  const user = localStorage.getItem("user");
+  const [rating, setRating] = useState(null);
+  const [hoverRating, setHoverRating] = useState(null);
 
-	useEffect(() => {
-		const fetchRating = async () => {
-			try {
-				const response = await axios.get("/api/rating/cuberoll");
-				setRating(response.data);
-			} catch (error) {
-				console.error("Error fetching scores:", error);
-			}
-		};
+  const { addRating } = useRating();
 
-		fetchRating();
-	}, []);
+  useEffect(() => {
+    const fetchRating = async () => {
+      try {
+        const response = await axios.get("/api/rating/cuberoll");
+        setRating(response.data);
+      } catch (error) {
+        console.error("Error fetching scores:", error);
+      }
+    };
 
-	const handleStarClick = async (value) => {
-		try {
-			// Make a POST request to submit the rating
-			await axios.post("/api/rating/cuberoll", { rating: value });
-			setRating(value);
-		} catch (error) {
-			console.error("Error submitting rating:", error);
-		}
-	};
+    fetchRating();
+  }, []);
 
-	const renderStars = () => {
-		const stars = [];
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(<span key={i}>{i <= rating ? "★" : "☆"}</span>);
+    }
+    return stars;
+  };
 
-		for (let i = 1; i <= 5; i++) {
-			stars.push(
-				<span
-					key={i}
-					style={{ cursor: "pointer" }}
-					onClick={() => handleStarClick(i)}
-					onMouseEnter={() => setHoverRating(i)}
-					onMouseLeave={() => setHoverRating(null)}
-				>
-					{i <= (hoverRating || rating) ? "★" : "☆"}
-				</span>
-			);
-		}
+  const addStars = () => {
+    const stars = [];
 
-		return stars;
-	};
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <span
+          key={i}
+          style={{ cursor: "pointer" }}
+          onClick={() => addRating(user, i)}
+          onMouseEnter={() => setHoverRating(i)}
+          onMouseLeave={() => setHoverRating(null)}
+        >
+          {i <= hoverRating ? "★" : "☆"}
+        </span>
+      );
+    }
 
-	return (
-		<div className="flex flex-col align-middle">
-			<h1>Average rating: </h1>
-			<div>{rating !== null && renderStars()}</div>
-			<h1>Rate this game</h1>
-			<div>{rating !== null && renderStars()}</div>
-		</div>
-	);
+    return stars;
+  };
+
+  return (
+    <div className="flex flex-col align-middle">
+      <h1>Average rating: </h1>
+      <div>{renderStars(rating)}</div>
+      <h1>Add rating: </h1>
+      <div>{addStars()}</div>
+    </div>
+  );
 };
 
 export default Rating;

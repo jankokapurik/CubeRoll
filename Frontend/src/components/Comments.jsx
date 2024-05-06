@@ -6,7 +6,7 @@ import { useComment } from "../hooks/useComment";
 const Comments = () => {
   const user = localStorage.getItem("user");
 
-  const { addComment, getComment, error, isLoading } = useComment();
+  const { addComment } = useComment();
 
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
@@ -43,7 +43,9 @@ const Comments = () => {
             className="w-full px-4 py-2 border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
           ></textarea>
           <button
-            onClick={() => addComment(user, comment)}
+            onClick={() => {
+              addComment(user, comment), setComment("");
+            }}
             type="submit"
             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >

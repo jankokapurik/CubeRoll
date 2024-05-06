@@ -1,22 +1,22 @@
 import axios from "axios";
 import { useState } from "react";
 
-export const useComment = () => {
+export const useRating = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const addComment = async (user, comment) => {
+  const addRating = async (user, comment) => {
     setIsLoading(true);
     console.log(user, comment);
 
     try {
-      const response = await axios.post("/api/comment", {
+      const response = await axios.post("/api/rating/cuberoll", {
          user: user.username,
          comment,
       });
 
       if (response.status === 200) {
-        console.log("Successfull add a comment");
+        console.log("Successfull add a rating");
       }
     } catch (error) {
       setError(error.response.data);
@@ -24,5 +24,5 @@ export const useComment = () => {
     }
   };
 
-  return { addComment, error, isLoading };
+  return { addRating, error, isLoading };
 };
