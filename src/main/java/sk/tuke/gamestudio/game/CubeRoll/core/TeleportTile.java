@@ -1,5 +1,7 @@
 package sk.tuke.gamestudio.game.CubeRoll.core;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class TeleportTile extends Tile{
     private final int DESTINATIONX;
     private final int DESTINATIONY;
