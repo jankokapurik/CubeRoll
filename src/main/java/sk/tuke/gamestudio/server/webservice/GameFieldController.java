@@ -20,6 +20,7 @@ public class GameFieldController {
     @GetMapping("/newGame/{level}")
     public GameField newGame(@PathVariable String level) throws IOException {
         this.field = new GameField(Integer.parseInt(level), new Cube());
+        System.out.println(this.field);
         return this.field;
     }
 

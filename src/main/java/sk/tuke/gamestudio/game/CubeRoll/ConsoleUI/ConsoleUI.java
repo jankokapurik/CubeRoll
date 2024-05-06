@@ -101,6 +101,7 @@ public class ConsoleUI {
 
 
         this.field = new GameField(level, cube);
+        System.out.println(this.field);
         JFrame myJFrame = new JFrame();
         getKeyListener(myJFrame);
         show();
