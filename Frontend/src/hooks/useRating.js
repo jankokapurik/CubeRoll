@@ -9,7 +9,7 @@ export const useRating = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("/api/rating/cuberoll", {
+      const response = await axios.post("/api/rating", {
         user: user.username,
         rating,
       });

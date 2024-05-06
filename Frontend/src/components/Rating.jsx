@@ -26,18 +26,22 @@ const Rating = () => {
 
   useEffect(() => {
     const fetchUserRating = async () => {
-      try {
-        const response = await axios.get(
-          "/api/rating/cuberoll/${user.username}"
-        );
-        setUserRating(response.data);
-      } catch (error) {
-        console.error("Error fetching scores:", error);
-      }
+      if(user)
+        {
+          
+          try {
+            const response = await axios.get(
+              `/api/rating/cuberoll/${user.username}`
+            );
+            setUserRating(response.data);
+          } catch (error) {
+            console.error("Error fetching scores:", error);
+          }
+        }
     };
 
     fetchUserRating();
-  }, []);
+  }, [hoverRating]);
 
   const renderStars = (rating) => {
     const stars = [];

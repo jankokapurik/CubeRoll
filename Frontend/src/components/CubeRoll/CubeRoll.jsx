@@ -63,50 +63,76 @@ const CubeRoll = () => {
 									key={`${rowIndex}-${colIndex}`}
 									className="relative"
 								>
-									{rowIndex === data.cubeYPos &&
-										colIndex === data.cubeXPos && (
-											<div
-												className="absolute w-full h-full"
-												style={{ zIndex: 1 }}
-											>
-												{/* Render your cube here */}
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													width="100%"
-													height="100%"
-													viewBox="0 0 24 24"
-													fill="yellow"
-												>
-													<path
-														d="M0 0h24v24H0z"
-														fill="none"
-													/>
-													<path d="M20 12c0-4.41-3.59-8-8-8s-8 3.59-8 8c0 3.74 2.56 6.89 6 7.75V22h4v-2.25c3.44-.86 6-4.01 6-7.75zm-6 5.75V20h-4v-2.25c-2.88-.71-5-3.36-5-6.5 0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5c0 3.14-2.12 5.79-5 6.5zm-2-8.75c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
-												</svg>
-											</div>
-										)}
 									<div
 										className={
 											element.type === "null"
-												? "m-1 h-10 w-10 opacity-100"
+												? "m-1 h-16 w-16 opacity-100"
 												: element.type === "finish"
-												? "m-1 h-10 w-10 bg-red-500"
+												? "m-1 h-16 w-16 bg-red-500"
 												: element.type === "button"
-												? "m-1 h-10 w-10 bg-blue-500"
+												? "m-1 h-16 w-16 bg-blue-500"
 												: element.type == "paint"
-												? `m-1 h-10 w-10 flex justify-center align-middle text-white text-3xl`
-												: "m-1 h-10 w-10 bg-gray-600"
+												? `m-1 h-16 w-16 flex justify-center align-middle text-white text-3xl`
+												: "m-1 h-16 w-16 bg-gray-600"
 										}
 										style={
 											element.color
 												? {
 														backgroundColor:
 															element.color,
+															
 												  }
 												: null
 										}
 									>
-										{element.type == "paint" ? "+" : ""}
+										{rowIndex === data.cubeYPos &&
+										colIndex === data.cubeXPos ? (
+											<div
+												className="w-full h-full flex flex-col allign-middle justify-center"
+												style={{ zIndex: 1 }}
+											>
+												<div
+													className="h-3 mx-auto w-10 border border-gray-700"
+													style={{
+														backgroundColor:
+															data.cube.up,
+													}}
+												></div>
+												<div className="flex flex-row h-10 w-full">
+													<div
+														className="w-3 h-10 border border-gray-700"
+														style={{
+															backgroundColor:
+																data.cube.left,
+														}}
+													></div>
+													<div
+														className="w-10 h-10 "
+														style={{
+															backgroundColor:
+																data.cube.right,
+														}}
+													></div>
+													<div
+														className="w-3 h-10 border border-gray-700"
+														style={{
+															backgroundColor:
+																data.cube.right,
+														}}
+													></div>
+												</div>
+
+												<div
+													className="h-3 w-10  mx-auto border border-gray-700"
+													style={{
+														backgroundColor:
+															data.cube.down,
+													}}
+												></div>
+											</div>
+										) : element.type == "paint" ? (
+											"+"
+										) : null}
 									</div>
 								</div>
 							))}

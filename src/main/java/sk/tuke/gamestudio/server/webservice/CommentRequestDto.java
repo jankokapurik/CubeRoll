@@ -3,6 +3,15 @@ package sk.tuke.gamestudio.server.webservice;
 public class CommentRequestDto {
     private String user;
     private String comment;
+    private int rating;
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
 
     public String getUser() {
         return user;

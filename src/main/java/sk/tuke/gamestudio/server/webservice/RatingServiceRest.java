@@ -29,6 +29,6 @@ public class RatingServiceRest {
 
     @PostMapping
     public void SetRating(@RequestBody CommentRequestDto requestDto) {
-        ratingService.setRating(new Rating("Cuberoll", requestDto.getUser(), Integer.parseInt(requestDto.getComment()),  Date.valueOf(LocalDate.now())));
+        ratingService.setRating(new Rating("cuberoll", requestDto.getUser(), requestDto.getRating(),  Date.valueOf(LocalDate.now())));
     }
 }

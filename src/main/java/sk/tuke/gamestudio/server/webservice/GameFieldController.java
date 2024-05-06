@@ -74,12 +74,12 @@ public class GameFieldController {
 
         JSONObject cubeJson = new JSONObject();
 
-        cubeJson.put("top", this.field.getCube().getCubeSides().get("top"));
-        cubeJson.put("bottom", this.field.getCube().getCubeSides().get("bottom"));
-        cubeJson.put("right", this.field.getCube().getCubeSides().get("right"));
-        cubeJson.put("left", this.field.getCube().getCubeSides().get("left"));
-        cubeJson.put("up", this.field.getCube().getCubeSides().get("up"));
-        cubeJson.put("down", this.field.getCube().getCubeSides().get("down"));
+        cubeJson.put("top", formatColor(this.field.getCube().getCubeSides().get("top")));
+        cubeJson.put("bottom", formatColor(this.field.getCube().getCubeSides().get("bottom")));
+        cubeJson.put("right", formatColor(this.field.getCube().getCubeSides().get("right")));
+        cubeJson.put("left", formatColor(this.field.getCube().getCubeSides().get("left")));
+        cubeJson.put("up", formatColor(this.field.getCube().getCubeSides().get("up")));
+        cubeJson.put("down", formatColor(this.field.getCube().getCubeSides().get("down")));
 
         gameFieldJson.put("cube", cubeJson);
 
@@ -96,15 +96,14 @@ public class GameFieldController {
         {
             tileJson.put("type", "paint");
             Color color =  ((PaintTile) tiles[row][col]).getColor();
-            String hexColor = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+            String hexColor = formatColor(color);
 
             tileJson.put("color", hexColor);
         }else if (this.field.getTiles()[row][col] instanceof ColorTile)
         {
             tileJson.put("type", "color");
             Color color =  ((ColorTile) tiles[row][col]).getColor();
-            String hexColor = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
-
+            String hexColor = formatColor(color);
             tileJson.put("color", hexColor);
         } else if (this.field.getTiles()[row][col] instanceof TeleportTile) {
             tileJson.put("type", "teleport");
@@ -117,5 +116,8 @@ public class GameFieldController {
             tileJson.put("type", "null");
         }
         return tileJson;
+    }
+    private String formatColor(Color color) {
+        return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
     }
 }
