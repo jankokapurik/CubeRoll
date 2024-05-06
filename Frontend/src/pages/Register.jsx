@@ -29,6 +29,7 @@ export default function Login() {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button onClick={onButtonRegisterClick}>Register</button>
+      {error && <p className="text-red-700">{error.error}</p>}
     </>
   );
 }
