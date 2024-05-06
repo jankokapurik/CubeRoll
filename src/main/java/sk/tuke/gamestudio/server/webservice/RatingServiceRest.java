@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.service.RatingService;
 
+import java.sql.Date;
+import java.time.LocalDate;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/api/rating")
@@ -25,7 +28,7 @@ public class RatingServiceRest {
     }
 
     @PostMapping
-    public void SetRating(@RequestBody Rating rating) {
-        ratingService.setRating(rating);
+    public void SetRating(@RequestBody CommentRequestDto requestDto) {
+        ratingService.setRating(new Rating("Cuberoll", requestDto.getUser(), Integer.parseInt(requestDto.getComment()),  Date.valueOf(LocalDate.now())));
     }
 }

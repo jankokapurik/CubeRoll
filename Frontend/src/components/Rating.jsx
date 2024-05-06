@@ -1,8 +1,9 @@
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useEffect, useState } from "react";
 
-export default function Rating() {
+const Rating = () => {
 	const [rating, setRating] = useState(null);
+	const [hoverRating, setHoverRating] = useState(null);
 
 	useEffect(() => {
 		const fetchRating = async () => {
@@ -17,15 +18,31 @@ export default function Rating() {
 		fetchRating();
 	}, []);
 
+	const handleStarClick = async (value) => {
+		try {
+			// Make a POST request to submit the rating
+			await axios.post("/api/rating/cuberoll", { rating: value });
+			setRating(value);
+		} catch (error) {
+			console.error("Error submitting rating:", error);
+		}
+	};
+
 	const renderStars = () => {
 		const stars = [];
 
-		for (let i = 0; i < 5; i++) {
-			if (i < rating) {
-				stars.push(<span key={i}>&#9733;</span>);
-			} else {
-				stars.push(<span key={i}>&#9734;</span>);
-			}
+		for (let i = 1; i <= 5; i++) {
+			stars.push(
+				<span
+					key={i}
+					style={{ cursor: "pointer" }}
+					onClick={() => handleStarClick(i)}
+					onMouseEnter={() => setHoverRating(i)}
+					onMouseLeave={() => setHoverRating(null)}
+				>
+					{i <= (hoverRating || rating) ? "★" : "☆"}
+				</span>
+			);
 		}
 
 		return stars;
@@ -33,8 +50,12 @@ export default function Rating() {
 
 	return (
 		<div className="flex flex-col align-middle">
-			<h1>Average rating: {rating}</h1>
+			<h1>Average rating: </h1>
+			<div>{rating !== null && renderStars()}</div>
+			<h1>Rate this game</h1>
 			<div>{rating !== null && renderStars()}</div>
 		</div>
 	);
-}
+};
+
+export default Rating;
