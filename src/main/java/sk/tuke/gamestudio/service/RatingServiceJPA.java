@@ -3,6 +3,7 @@ package sk.tuke.gamestudio.service;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import org.hibernate.NonUniqueResultException;
 import sk.tuke.gamestudio.entity.Rating;
@@ -25,8 +26,16 @@ public class RatingServiceJPA implements RatingService{
 
     @Override
     public int getAverageRating(String game) throws RatingException {
-        return entityManager.createNamedQuery("Rating.getAverageRating").setParameter("game", game).getFirstResult();
-
+        try {
+            Query query = entityManager.createNamedQuery("Rating.getAverageRating")
+                    .setParameter("game", game);
+            Double averageRating = (Double) query.getSingleResult();
+            return averageRating != null ? averageRating : 0.0; // Return 0.0 if no rating found
+        } catch (NoResultException e) {
+            throw new RatingException("No rating found for the game: " + game, e);
+        } catch (Exception e) {
+            throw new RatingException("Error retrieving average rating for the game: " + game, e);
+        }
     }
 
     @Override

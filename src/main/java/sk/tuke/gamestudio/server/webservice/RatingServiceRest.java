@@ -6,6 +6,7 @@ import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.service.RatingService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/rating")
 public class RatingServiceRest {
 
