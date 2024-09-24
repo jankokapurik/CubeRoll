@@ -7,8 +7,8 @@ export const useGame = () => {
 
   const saveGame = async (user, rating) => {
     setIsLoading(true);
-
-    try {
+    console.log(user,rating);
+        try {
       const response = await axios.post("/api/score", {
         user: user.username,
         rating,

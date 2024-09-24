@@ -15,7 +15,7 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col justify-between font-Cube_Font">
       <Header />
-      <body className="w-full flex justify-center align-middle">
+      <body className=" flex justify-center align-middle mt-28">
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/scores" element={<HallOfFame />} />

@@ -72,11 +72,11 @@ const Rating = () => {
   };
 
   return (
-    <div className="flex flex-col align-middle">
+    <div className="flex mb-5 flex-col items-center align-middle text-2xl">
       <h1>Average rating: </h1>
-      <div>{renderStars(rating)}</div>
-      <h1>Add rating: </h1>
-      <div>{addStars(user)}</div>
+      <div className="text-3xl">{renderStars(rating)}</div>
+      <h1 className="mt-2">Add your rating: </h1>
+      <div className="text-3xl">{addStars(user)}</div>
     </div>
   );
 };

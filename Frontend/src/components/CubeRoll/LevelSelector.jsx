@@ -4,18 +4,23 @@ import { useNavigate } from "react-router-dom";
 const LevelSelector = () => {
 	const levels = Array.from({ length: 10 }, (_, i) => i + 1);
 	const navigate = useNavigate()
+	const [hoveredLevel, setHoveredLevel] = useState(null);
 
 	return (
-		<div className="level-selector">
-			<h2>Choose a Level</h2>
-			<div className="level-buttons flex flex-col">
+		<div>
+			<h2 className="text-2xl mb-5">Choose a Level</h2>
+			<div className="level-buttons flex flex-col space-y-5">
 				{levels.map((level) => (
 					<button
 						key={level}
-						className="level-button bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md m-2 cursor-pointer"
+						className="p4 p-1 text-lg rounded-md border-2 border-black hover:text-white hover:bg-black"
+						onMouseEnter={() => setHoveredLevel(level)}
+						onMouseLeave={() => setHoveredLevel(null)}
 						onClick={() => navigate(`/cuberoll/${level}`)}
 					>
+						{hoveredLevel === level && <span>{">"}</span>}
 						Level {level}
+						{hoveredLevel === level && <span>{"<"}</span>}
 					</button>
 				))}
 			</div>

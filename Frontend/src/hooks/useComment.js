@@ -7,7 +7,7 @@ export const useComment = () => {
 
   const addComment = async (user, comment) => {
     setIsLoading(true);
-    console.log(user, comment);
+    console.log(user.username, comment);
 
     try {
       const response = await axios.post("/api/comment", {

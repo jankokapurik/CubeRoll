@@ -24,6 +24,7 @@ public class CommentServiceRest {
 
     @PostMapping
     public void addComment(@RequestBody CommentRequestDto requestDto) {
+        System.out.println(requestDto.getUser());
         commentService.addComment(new Comment("cuberoll", requestDto.getUser(), requestDto.getComment(),  Date.valueOf(LocalDate.now())));
     }
 }

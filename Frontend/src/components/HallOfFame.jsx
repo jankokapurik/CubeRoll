@@ -22,35 +22,38 @@ const HallOfFame = () => {
 	
 
 	return (
-		<div className="max-w-4xl mx-auto">
-			<h2 className="text-2xl font-semibold mb-4">Hall of Fame</h2>
-			<table className="table-auto w-full">
+		<div className="w-9/12 mx-auto flex flex-col items-center">
+			<h2 className="text-2xl mb-4">Hall of Fame</h2>
+			<table className="table-auto w-full ">
 				<thead>
-					<tr>
-						<th className="px-4 py-2 bg-gray-200 text-gray-800">
-							Player
-						</th>
-						<th className="px-4 py-2 bg-gray-200 text-gray-800">
-							Points
-						</th>
-						<th className="px-4 py-2 bg-gray-200 text-gray-800">
-							Played On
-						</th>
+					<tr className="bg-black text-white">
+						<th className="px-4 py-2">Place</th>
+						<th className="px-4 py-2">Player</th>
+						<th className="px-4 py-2">Score</th>
+						<th className="px-4 py-2">Played On</th>
 					</tr>
 				</thead>
 				<tbody>
-					{scores.map((score, index) => (
-						<tr key={index}>
-							<td className="border px-4 py-2">{score.player}</td>
-							<td className="border px-4 py-2">{score.points}</td>
-							<td className="border px-4 py-2">
-								{new Date(score.playedOn).toLocaleString()}
+					{scores.map((score, index) => {
+						const playedOnDate = new Date(score.playedOn);
+                        const formattedDate = `${playedOnDate.getDate()}.${playedOnDate.getMonth() + 1}.${playedOnDate.getFullYear()}`;
+
+                        return (
+						<tr
+							key={index}
+							className="border-b border-black mx-auto"
+						>
+							<td className="px-4 py-2 text-center">{index}</td>
+							<td className="px-4 py-2 text-center">{score.player}</td>
+							<td className="px-4 py-2 text-center">{score.points}</td>
+							<td className="px-4 py-2 text-center">
+								{formattedDate}
 							</td>
 						</tr>
-					))}
+						);
+					})}
 				</tbody>
 			</table>
-			
 		</div>
 	);
 };

@@ -2,9 +2,12 @@ package sk.tuke.gamestudio.server.webservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.service.ScoreService;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -26,7 +29,7 @@ public class ScoreServiceRest {
     }
 
     @PostMapping
-    public void addScore(@RequestBody Score score) {
-        scoreService.addScore(score);
+    public void addScore(@RequestBody CommentRequestDto requestDto) {
+        scoreService.addScore(new Score("cuberoll", requestDto.getUser(), requestDto.getRating(),  Date.valueOf(LocalDate.now())));
     }
 }
